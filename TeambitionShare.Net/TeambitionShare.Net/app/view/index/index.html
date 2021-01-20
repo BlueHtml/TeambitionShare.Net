@@ -1,0 +1,60 @@
+<?php include template('common/head') ?>
+<div class="mdui-container">
+	<?php 
+		if($dir['_parentId'] != NULL){
+	?>
+	<div class="row">
+		<div class="mdui-col">
+			<div class="mdui-typo-subheading mdui-m-b-1 mdui-p-l-1 mdui-text-truncate">
+				<a href="<?=$_CFG['url']?>/<?=$dir['_parentId']?>" class="mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></a>
+				<i class="mdui-icon material-icons mdui-m-r-1">folder_open</i><?=$dir['title']?></div>
+    		<div class="mdui-divider mdui-m-b-2"></div>
+		</div>
+	</div>
+	<?php
+		}
+	?>
+	<div class="mdui-row mdui-m-t-2 mdui-p-l-2">
+
+		<div class="mdui-col-xs-7">
+			Name
+		</div>
+		<div class="mdui-col-xs-5 mdui-text-right mdui-p-r-3">
+			Size
+		</div>
+
+	</div>
+	<div class="mdui-list filelist">
+		<?php
+			foreach($dirlist as $dir){
+			if($dir['title']){
+		?>
+		<a href="<?=$_CFG['url']?>/<?=$dir['_id']?>" class="mdui-list-item mdui-ripple" style="width: 100%;display: block;line-height: 48px;">
+			<div class="mdui-row">
+				<div class="mdui-col-xs-12 mdui-text-truncate">
+					<i class="mdui-icon material-icons mdui-m-r-1">folder</i> <?=$dir['title']?>
+				</div>
+			</div>
+		</a>
+		<?php
+			}}
+		?>
+		<?php
+			foreach($filelist as $file){
+		?>
+		<a target="__blank" href="<?=$_CFG['url']?>/download/<?=$file['_id']?><?=isPreview($file['fileType'])?>" class="mdui-list-item mdui-ripple" style="width: 100%;display: block;line-height: 48px;">
+			<div class="mdui-row">
+				<div class="mdui-col-xs-7 mdui-text-truncate">
+					<i class="mdui-icon material-icons mdui-m-r-1"><?=getFileicon($file['fileType'])?></i> <?=$file['fileName']?>
+				</div>
+				<div class="mdui-col-xs-5 mdui-text-right">
+					<?=getSize($file['fileSize'])?>
+				</div>
+			</div>
+		</a>
+		<?php
+			}
+		?>
+	</div>
+</div>
+<?php include template('common/foot') ?>

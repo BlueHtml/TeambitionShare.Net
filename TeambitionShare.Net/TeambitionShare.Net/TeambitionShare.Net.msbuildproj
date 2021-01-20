@@ -1,0 +1,21 @@
+<Project Sdk="Peachpie.NET.Sdk/1.0.0-preview5">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>TeambitionShare.Net</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="**/*.php;**/*.phar;**/*.html;**/*.css;" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="**" Exclude="obj/**;bin/**;PublishProfiles/**;@(Compile);$(MsBuildThisFile)">
+      <PackagePath>contentFiles/any/netcoreapp3.0/wwwroot/</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+      <CopyToOutputDirectory>true</CopyToOutputDirectory>
+      <CopyToPublishDirectory>true</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CsLib\CsLib.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,99 @@
+<?php include template('common/head') ?>
+<div class="mdui-container">
+    <div class="mdui-row">
+        <div class="mdui-col-md-8 mdui-col-offset-md-2">
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">网站标题</label>
+                <input class="mdui-textfield-input" id="title" type="text" value="TeambitionShare"/>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">网站地址</label>
+                <input class="mdui-textfield-input" id="url" type="text" value="<?=APPURL?>"/>
+                <div class="mdui-textfield-helper">如果放在二级目录,请填写对应地址 例如http://xxx.com/pan</div>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">挂载类型</label>
+                <div class="mdui-row-md-3 mdui-p-x-1">
+                    <div class="mdui-col">
+                        <label class="mdui-radio">
+                            <input type="radio" name="type" value="pan" checked/>
+                            <i class="mdui-radio-icon"></i>
+                            Teambition网盘
+                        </label>
+                    </div>
+                    <div class="mdui-col">
+                        <label class="mdui-radio">
+                            <input type="radio" name="type" value="project"/>
+                            <i class="mdui-radio-icon"></i>
+                            Teambition项目文件
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="mdui-textfield" id="prject" style="display: none;">
+                <label class="mdui-textfield-label">项目ID</label>
+                <input class="mdui-textfield-input" id="projectId" type="text"/>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">账号Cookie</label>
+                <textarea class="mdui-textfield-input" rows="6" id="cookie" placeholder="Cookie"></textarea>
+            </div>
+            <button class="mdui-btn mdui-btn-raised mdui-color-pink" id="ok">确认配置</button>
+        </div>
+    </div>
+</div>
+<?php include template('common/foot') ?>
+<script>
+$(function(){
+    $(':radio[name=type]').change(function(){
+        if($(this).val() == 'pan'){
+            $('#prject').hide();
+        }else{
+            $('#prject').show();
+        }
+    });
+
+    $('#ok').click(function(){
+        var title = $('#title').val(),
+        url = $('#url').val(),
+        type = $(':radio[name=type]:checked').val(),
+        cookie = $('#cookie').val();
+
+        if(!title || !url || !type || !cookie){
+            return mdui.alert('信息未填写完整');
+        }else{
+            var postdata = {
+                title:title,
+                url:url,
+                type:type,
+                cookie:cookie
+            };
+        }
+
+        if(type == 'project'){
+            var projectId = $('#projectId').val();
+            if(!projectId)return mdui.alert('未填写projectId');
+            postdata.projectId = projectId;
+        }
+        $('#loading').fadeToggle();
+        $.ajax({
+            type:"POST",
+            url:window.location.pathname,
+            data:postdata,
+            dataType:'json',
+            success:function(data){
+                $('#loading').fadeToggle();
+                if(data.code == 200){
+                    window.location.href = url;
+                }else{
+                    mdui.alert(data.msg);
+                }
+            },
+            error:function(){
+                $('#loading').fadeToggle();
+                mdui.alert('系统繁忙');
+            }
+        })
+    });
+});
+</script>
