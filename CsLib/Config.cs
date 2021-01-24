@@ -9,7 +9,8 @@ namespace CsLib
         public static bool IsConfigured => _phpCodes?.Length > 1;
 
         static string[] _phpCodes;
-        static readonly string _path = Path.Combine(AppContext.BaseDirectory, "config");
+        static readonly string _envPath = Environment.GetEnvironmentVariable("CONFIG_PATH");
+        static readonly string _path = string.IsNullOrWhiteSpace(_envPath) ? Path.Combine(AppContext.BaseDirectory, "config") : _envPath;
 
         static Config()
         {
